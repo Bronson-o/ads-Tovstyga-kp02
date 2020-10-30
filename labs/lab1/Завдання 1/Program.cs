@@ -17,7 +17,7 @@
 
             if ( y!=1 && z!=0)
             {
-                double a = Math.Pow(x + y*y + 2*z, (1/3)) / (Math.Abs(1-y)*(z*z));
+                double a = Math.Pow(x + y*y + 2*z, 1.0/3.0) / (Math.Abs(1-y)*(z*z));
                 Console.WriteLine("a = {0}",a);
 
                 if (a==0)
