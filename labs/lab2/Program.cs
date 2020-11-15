@@ -18,7 +18,6 @@ class Program
                 if (n==1)
                 {
                     test = CreateRandomM(N, M);
-                    Console.WriteLine("\n");
                     PrintM(test);
                     Lower(test, N);
                     Upper(test, N);
@@ -27,7 +26,6 @@ class Program
                 if (n == 2)
                 {
                     test = CreateM(N,M);
-                    Console.WriteLine("\n");
                     PrintM(test);
                     Lower(test, N);
                     Upper(test, N);
