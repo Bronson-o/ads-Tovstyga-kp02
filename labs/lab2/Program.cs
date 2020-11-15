@@ -66,35 +66,37 @@ class Program
             {
                 for(int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    Console.Write("{0} ", matrix[i, j]);
+                    Console.Write(matrix[i,j] + " ");
+                    if(matrix[i,j] / 10 < 1)
+                    {
+                        Console.Write("  ");
+                    }
+                    else if(matrix[i,j] / 100 < 1)
+                    {
+                        Console.Write(" ");
+                    }
                 }
                 Console.WriteLine();
             }
         }
         static void Algo(int N, int M, int[,] test)
         {
-            int i = 0;
-            int j = 0;
             int x1 = 0;
             int y1 = 0;
             int x2 = 0;
             int y2 = 0;
             int count = 0;
-            int counter = 0;
-            int counter_ = 0;
             int counter2 = 0;
             int counter3 = 0;
             int min = 99;
-            int max = 10;
-            int num = 0;
-            counter = N - 2;
-            int[] B = new int[(N * N) / 2 - N/ 2];
-            int[] C = new int[(N * N) / 2 + N/ 2];
+            int max = 10;         
+            int[] B = new int[(N * M) / 2 - N/ 2];
+            int[] C = new int[(N * M) / 2 + N/ 2];
             // first part(lower)           
-            i = 1;
-            j = 0;
-
-            for (count = 0; count < N - 2; count++)
+            int i = 1;
+            int j = 0;
+            int counter = N - 2;
+            for (count = 0; count < M - 2; count++) // napryam koroche
                 {
 
                     if (test[i, j] > max)
@@ -108,7 +110,6 @@ class Program
                     counter2++;
                     i++;
                 }
-
             while (counter != 0)
                 {
 
@@ -166,7 +167,7 @@ class Program
                 counter2++;
                 Console.WriteLine("lower part: ");
 
-            for (i = 0; i < (N * N / 2 - N / 2); i++)
+            for (i = 0; i < (N * M / 2 - N / 2); i++)
                 {
 
                     Console.Write("{0 } ",B[i]);
@@ -273,14 +274,14 @@ class Program
                 }
                 C[counter3] = test[i, j];
                 counter3++;
-                Console.WriteLine("upper part: ");
+                Console.WriteLine("upper part:");
 
-                for (i = 0; i < (N * N / 2 + N / 2); i++)
+                for (i = 0; i < (N * N / 2 + N / 2 ); i++)
                 {
-                    Console.Write(" {0}",C[i]);
+                    Console.Write("{0} ",C[i]);
                 }
-            Console.WriteLine("\nMax of lower part = {0}, koord = {1}, {2}", max, x1, y1);
-            Console.WriteLine("Min of upper part = {0}, koord = {1}, {2}", min, x2, y2);
+            Console.WriteLine("\nMax of lower part = {0}, koord = ({1}, {2})", max, x1, y1);
+            Console.WriteLine("Min of upper part = {0}, koord = ({1}, {2})", min, x2, y2);
         } 
 }
    
