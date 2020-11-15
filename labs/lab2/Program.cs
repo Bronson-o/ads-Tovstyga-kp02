@@ -10,7 +10,7 @@ class Program
           int M = int.Parse(Console.ReadLine());  
           int[,] test;
           int n;
-          if ((N > 0) && (N == M)) 
+          if ((N > 1) && (N == M)) 
             {
             Console.WriteLine("Введіть 1, щоб заповнити матрицю рандомно. Введіть 2, щоб заповнити матрицю числами від 0 дo N*M");
             n = int.Parse(Console.ReadLine());
@@ -18,15 +18,19 @@ class Program
                 if (n==1)
                 {
                     test = CreateRandomM(N, M);
+                    Console.WriteLine("\n");
                     PrintM(test);
-                    Algo(N, M, test);
+                    Lower(test, N);
+                    Upper(test, N);
                 }
                 else
                 if (n == 2)
                 {
                     test = CreateM(N,M);
+                    Console.WriteLine("\n");
                     PrintM(test);
-                    Algo(N, M, test);
+                    Lower(test, N);
+                    Upper(test, N);
                 }
                 else
                  Console.WriteLine("Помилка вводу n");
@@ -55,7 +59,7 @@ class Program
             {
                 for(int j = 0; j < M; j++)
                 {
-                    matrix[i, j] = random.Next(0, N*M); 
+                    matrix[i, j] = random.Next(10, 100); 
                 }
             }
             return matrix;
@@ -79,209 +83,79 @@ class Program
                 Console.WriteLine();
             }
         }
-        static void Algo(int N, int M, int[,] test)
+        static void Lower(int [,] matrix, int N)
         {
-            int x1 = 0;
-            int y1 = 0;
-            int x2 = 0;
-            int y2 = 0;
-            int count = 0;
-            int counter2 = 0;
-            int counter3 = 0;
-            int min = 99;
-            int max = 10;         
-            int[] B = new int[(N * M) / 2 - N/ 2];
-            int[] C = new int[(N * M) / 2 + N/ 2];
-            // first part(lower)           
-            int i = 1;
-            int j = 0;
-            int counter = N - 2;
-            for (count = 0; count < M - 2; count++) // napryam koroche
+            int min_i = N-1;
+            int min_j = N-2;
+            Console.WriteLine("\nLower part:");
+            for (int i = N-1; i>=1; i--)
+            {
+                for (int k = N - 2 - 2*(N-1-i); k >= (N-1-i); k--)
                 {
-
-                    if (test[i, j] > max)
+                    Console.Write(matrix[i,k]+" ");
+                    if (matrix[min_i, min_j] > matrix[i, k])
                     {
-
-                        max = test[i, j];
-                        x1 = i;
-                        y1 = j;
-                    }
-                    B[counter2] = test[i, j];
-                    counter2++;
-                    i++;
-                }
-            while (counter != 0)
-                {
-
-                    if (counter != 0)
-                    {
-
-                        for (count = 0; count < counter; count++)
-                        {
-
-                            if (test[i, j] > max)
-                            {
-
-                                max = test[i, j];
-                                x1 = i;
-                                y1 = j;
-                            }
-                            B[counter2] = test[i, j];
-                            counter2++;
-                            j++;
-                        }
-
-                        counter--;
-                    }
-
-                if (counter != 0)
-                    {
-
-                        for (count = 0; count < counter; count++)
-                        {
-
-                            if (test[i, j] > max)
-                            {
-
-                                max = test[i, j];
-                                x1 = i;
-                                y1 = j;
-                            }
-                            B[counter2] = test[i, j];
-                            counter2++;
-                            i--;
-                            j--;
-                        }
-
-                        counter--;
+                        min_i = i;
+                        min_j = k;
                     }
                 }
-            if (test[i, j] > max)
+                for (int k = N-2 - (N - 1 - i); k > 2*(N - 1 - i); k--)
                 {
-
-                    max = test[i, j];
-                    x1 = i;
-                    y1 = j;
-                }
-                B[counter2] = test[i, j];
-                counter2++;
-                Console.WriteLine("lower part: ");
-
-            for (i = 0; i < (N * M / 2 - N / 2); i++)
-                {
-
-                    Console.Write("{0 } ",B[i]);
-                }
-                Console.WriteLine();
-            // upper part
-                i = 0;
-                j = 0;
-                counter = N - 1;
-
-                while (i != counter)
-                {
-
-                    for (count = 0; count < N - 1; count++)
+                    Console.Write(matrix[k, N-1-i]+" ");
+                    if (matrix[min_i, min_j] > matrix[k, N-1-i])
                     {
-
-                        if (test[i, j] < min)
-                        {
-
-                            min = test[i, j];
-                            x2 = i;
-                            y2 = j;
-                        }
-                        C[counter3] = test[i, j];
-                        counter3++;
-                        i++;
-                        j++;
+                        min_i = k;
+                        min_j = N-1-i;
                     }
                 }
-
-                while (counter != 0)
+                for (int k = 2*(N-i); k < i; k++)
                 {
-
-                    if (counter != 0)
+                    Console.Write(matrix[k, k-(N-i)]+" ");
+                    if (matrix[min_i, min_j] > matrix[k, k-(N-i)])
                     {
-
-                        for (count = 0; count < counter; count++)
-                        {
-
-                            if (test[i, j] < min)
-                            {
-
-                                min = test[i, j];
-                                x2 = i;
-                                y2 = j;
-                            }
-                            C[counter3] = test[i, j];
-                            counter3++;
-                            i--;
-                        }
-
-                        counter--;
+                        min_i = k;
+                        min_j = k-(N-i);
                     }
-
-                    if (counter != 0)
+                }              
+            }
+            Console.WriteLine("\nМiнiмум нижньої частини = {0} ({1},{2})", matrix[min_i, min_j], min_i + 1, min_j + 1);
+        }
+        static void Upper(int [,] matrix, int N)
+        {
+            int max_i = N-1;
+            int max_j = N-1;
+            Console.WriteLine("Upper part:");
+            for (int i = N; i>=1; i--)
+            {
+                for (int k = N - 1 - 2*(N-i); k >= (N-i); k--)
+                {
+                    Console.Write(matrix[k, k+(N-i)]+" ");
+                    if (matrix[max_i, max_j] > matrix[k, k+(N-i)])
                     {
-
-                        for (count = 0; count < counter; count++)
-                        {
-
-                            if (test[i, j] < min)
-                            {
-
-                                min = test[i, j];
-                                x2 = i;
-                                y2 = j;
-                            }
-                            C[counter3] = test[i, j];
-                            counter3++;
-                            j--;
-                        }
-
-                        counter--;
-                    }
-
-                    if (counter != 0)
-                    {
-
-                        for (count = 0; count < counter; count++)
-                        {
-
-                            if (test[i, j] < min)
-                            {
-
-                                min = test[i, j];
-                                x2 = i;
-                                y2 = j;
-                            }
-                            C[counter3] = test[i, j];
-                            counter3++;
-                            i++;
-                            j++;
-                        }
-
-                        counter--;
+                        max_i = k;
+                        max_j = k+(N-i);
                     }
                 }
-                if (test[i, j] < min)
+                for (int k = 2*(N - i)+1; k <= i-1; k++)
                 {
-
-                    min = test[i, j];
-                    x2 = i;
-                    y2 = j;
+                    Console.Write(matrix[N-i, k]+" ");
+                    if (matrix[max_i, max_j] < matrix[N-i, k])
+                    {
+                        max_i = N-i;
+                        max_j = k;
+                    }
                 }
-                C[counter3] = test[i, j];
-                counter3++;
-                Console.WriteLine("upper part:");
-
-                for (i = 0; i < (N * N / 2 + N / 2 ); i++)
+                for (int k = N-i+1; k <= N - 2*(N-i+1); k++)
                 {
-                    Console.Write("{0} ",C[i]);
-                }
-            Console.WriteLine("\nMax of lower part = {0}, koord = ({1}, {2})", max, x1, y1);
-            Console.WriteLine("Min of upper part = {0}, koord = ({1}, {2})", min, x2, y2);
-        } 
+                    Console.Write(matrix[k, i-1]+" ");
+                    if (matrix[max_i, max_j] < matrix[k, i-1])
+                    {
+                        max_i = k;
+                        max_j = i-1;
+                    }
+                }              
+            }
+            Console.WriteLine("\nМаксимум верхньої частини = {0} ({1},{2})", matrix[max_i, max_j], max_i + 1, max_j + 1);
+        }
 }
    
