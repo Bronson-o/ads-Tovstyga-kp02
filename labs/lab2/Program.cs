@@ -130,7 +130,7 @@ class Program
                 for (int k = N - 1 - 2*(N-i); k >= (N-i); k--)
                 {
                     Console.Write(matrix[k, k+(N-i)]+" ");
-                    if (matrix[max_i, max_j] > matrix[k, k+(N-i)])
+                    if (matrix[max_i, max_j] < matrix[k, k+(N-i)])
                     {
                         max_i = k;
                         max_j = k+(N-i);
