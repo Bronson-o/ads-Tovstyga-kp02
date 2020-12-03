@@ -14,7 +14,7 @@ namespace SortApp
                 var next = 0;                
                 while (true)
                 {
-                    next = r.Next(0, 100);
+                    next = r.Next(0, N + 100);
                     if (!Contains(matrix, next))
                     { 
                         break;
@@ -40,7 +40,7 @@ namespace SortApp
             bool Ncheck = int.TryParse(Console.ReadLine(), out N);
             int [] matrix = new int [N];
             matrix = CreateUniqueRandomMatrix(N);
-            PrintMatrix(matrix);
+            //
             List<int> ListSmaller = new List<int>();
             ListSmaller = SortSmallerNumbers(ListSmaller, matrix);
             List<int> ListBigger = new List<int>();
@@ -49,23 +49,17 @@ namespace SortApp
             List0.Add(matrix[0]);
             List<int> ListTemp = ListBigger.Union(List0).ToList();
             List<int> List = ListTemp.Union(ListSmaller).ToList();
-
+            //
             List<int> ListMatrix = new List<int>();
             for (int j = 0; j < matrix.Length; j++)
             {
                 ListMatrix.Add(matrix[j]);
             }
             Console.Write("\n");
-            PrintList(ListMatrix, List);
+            PrintInitialList(ListMatrix);
+            PrintListTemp(ListTemp);
+            PrintListSmaller(ListSmaller);
         }
-        static void PrintMatrix(int[] matrix)
-        {
-            for (int i = 0; i < matrix.Length; i++)
-            {
-                Console.Write("{0} ", matrix[i]);
-            }
-            Console.WriteLine();
-        }  
         static List<int> SortSmallerNumbers(List<int> List, int[] matrix)
         {
                 for (int j = 0; j < matrix.Length; j++)
@@ -112,47 +106,46 @@ namespace SortApp
                 }
             return List;
         }
-        static void PrintList(List<int> ListMatrix, List<int> List)
+        static void PrintInitialList(List<int> ListMatrix)
         {
             Console.WriteLine("Initial array:");
-            for (int i = 0; i < List.Count; i++)
+            for (int i = 0; i < ListMatrix.Count; i++)
             {
-                if (ListMatrix[i]==List[i])
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    int val1 = ListMatrix[i];
-                    Console.Write("{0} ", val1);
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    int val1 = ListMatrix[i];
-                    Console.Write("{0} ", val1);
-                    Console.ResetColor();
-                }
+
+                    Console.Write("{0} ", ListMatrix[i]);
             }
             Console.WriteLine();
+        }
+        static void PrintListTemp(List<int> ListMatrix)
+        {
             Console.WriteLine("Sorted array:");
-            for (int i = 0; i < List.Count; i++)
+            for (int i = 0; i < ListMatrix.Count; i++)
             {
-                if (List[i]==ListMatrix[i])
+                if (i == ListMatrix.Count - 1)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    int val1 = List[i];
-                    Console.Write("{0} ", val1);
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.Write("{0} ", ListMatrix[i]);
                     Console.ResetColor();
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    int val1 = List[i];
-                    Console.Write("{0} ", val1);
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write("{0} ", ListMatrix[i]);
                     Console.ResetColor();
                 }
+
             }
-            Console.WriteLine("\nGreen color - not sorted");
-            Console.WriteLine("Red color - sorted");
+        }
+
+        static void PrintListSmaller(List<int> ListMatrix)
+        {
+            for (int i = 0; i < ListMatrix.Count; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write("{0} ", ListMatrix[i]);
+                Console.ResetColor();
+            }
+            Console.WriteLine();
         }
     }
 }
