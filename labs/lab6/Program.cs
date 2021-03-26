@@ -21,9 +21,9 @@ namespace lab6
             }
             if (keyInfo.Key == ConsoleKey.Q)
             {
-                RunCommands(12345);
+                RunCommands(123);
                 Console.WriteLine();
-                RunCommands(32123);
+                RunCommands(65433456);
             }
             else
             {
