@@ -8,7 +8,9 @@ namespace lab6
         {
             string input = "";
             int inputInt = 0;
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Enter command:\r\nPress Q for Control\r\nPress E for Standart");
+            Console.ResetColor();
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             if (keyInfo.Key == ConsoleKey.E)
             {
