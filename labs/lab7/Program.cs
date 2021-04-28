@@ -156,7 +156,7 @@ namespace lab7
                     hashKey = strKey[i] + hashKey;
                 }
                 return (int)(hashKey);
-            }
+            }   
             public int GetHash(Key key) 
             {
                 int hashCode = this.HashCode(key);
@@ -271,114 +271,71 @@ namespace lab7
                 string[] subcommands = command.Split(' ');
                 if((subcommands[0] == "control")&&(subcommands.Length == 1))
                 {
-                    ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Anthony",
-                    "Byrne", "Deckergasse", "Max");
-                     count++;
-                    ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Colm",
-                    "McCarthy", "Dorotheergasse", "Max");
-                     count++;
-                    ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Tim",
-                    "Mielants", "Schönlaterngasse", "Max");
-                     count++;
-                    ControlValues(hs,  count, listDoctor, baseOfDoctors, addedHS, "Steven",
-                    "Knight", "Wienzeile", "Vladislav");
-                     count++;
-                    ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Sofia",
-                    "Knight", "Museumsquartier", "Vladislav");
-                     count++;
-                    ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Cillian",
-                    "Murphy", "Pazmanitengasse", "John");
-                     count++;
-                     ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Paul",
-                    "Anderson", "Karlsplatz", "Jacob");
-                     count++;
-                     Console.WriteLine("The table was filled");
+                    count = FillControl(hs, count, addedHS, listDoctor, baseOfDoctors);
+                    Console.WriteLine("The table was filled");
                 }
-                else if((subcommands[0] == "add")&&(subcommands.Length == 1))
+                else if(subcommands[0] == "add")
                 {
-                    Console.WriteLine("Enter name: ");
-                    key.firstName = Console.ReadLine();
-                    Console.WriteLine("Enter surname: ");
-                    key.lastName = Console.ReadLine();
-                    value.patientID = GenerateID(count);
-                    Console.WriteLine("Enter address: ");
-                    value.address = Console.ReadLine();
-                    Console.WriteLine("Enter doctor: ");
-                    value.familyDoctor = Console.ReadLine();
-                    listDoctor.Add(value.familyDoctor);
-                    if(!baseOfDoctors.Contains(value.familyDoctor))
+                    if (subcommands.Length != 1)
                     {
-                        baseOfDoctors.Add(value.familyDoctor);
-                    }
-                    if(CheckCountOfPatients(listDoctor, value.familyDoctor))
-                    {
-                        hs.InsertEntry(key, value);
-                        string newValue = value.patientID + " " + key.ToString() + " " + value.address;
-                        addedHS.Insert2(value.familyDoctor, newValue);
-                        count++;
-                        Console.WriteLine("Patient was added to base");
+                        Console.WriteLine("Incorreсt \"add\" command");
                     }
                     else
                     {
-                        Console.WriteLine($"Doctor {value.familyDoctor} have no free places");
-                        Console.WriteLine("You can choose another doctor");
-                        string freeDoctor = "";
-                        string [] arr = new string[baseOfDoctors.Count];
-                        baseOfDoctors.CopyTo(arr);
-                        for(int j = 0; j < arr.Length; j++)
-                        {
-                            string doctor = arr[j];
-                            if(CheckCountOfPatients(listDoctor, doctor))
-                            {
-                               freeDoctor += doctor + "\r\n";
-                            }
-                        }
-                        if(freeDoctor.Length > 0)
-                        {
-                            Console.WriteLine("Free doctors: ");
-                            Console.Write(freeDoctor);
-                        }
-                        else
-                        {
-                            Console.WriteLine("There are no free doctors");
-                        }
+                        count = AddPatient(count, key, value, hs, addedHS, listDoctor, baseOfDoctors);
                     }
                 }
                 else if((subcommands[0] == "remove")&&(subcommands.Length == 1))
                 {
-                    Console.WriteLine("Enter name: ");
-                    key.firstName = Console.ReadLine();
-                    Console.WriteLine("Enter surname: ");
-                    key.lastName = Console.ReadLine();
-                    Value value2 = hs.FindEntry(key);
-                    string newValue = " " + value2.patientID + " " + key.ToString() + " " + value2.address;
-                    hs.Remove(key);
-                    addedHS.Delete(value2.familyDoctor, newValue);
-                    listDoctor.Remove(value2.familyDoctor);
+                    if (subcommands.Length != 1)
+                    {
+                        Console.WriteLine("Incorreсt \"remove\" command");
+                    }
+                    else
+                    {
+                        RemovePatient(key, value, hs, addedHS, listDoctor);
+                    }
                 }
                 else if((subcommands[0] == "find")&&(subcommands.Length == 1))
                 {
-                    Console.WriteLine("Enter name: ");
-                    key.firstName = Console.ReadLine();
-                    Console.WriteLine("Enter surname: ");
-                    key.lastName = Console.ReadLine();
-                    hs.FindEntry(key);
+                    if (subcommands.Length != 1)
+                    {
+                        Console.WriteLine("Incorreсt \"find\" command");
+                    }
+                    else
+                    {
+                        FindPatient(key, hs);
+                    }
                 }
                 else  if((subcommands[0] == "print")&&(subcommands.Length == 1))
                 {
-                    Console.WriteLine("Hash table:");
-                    hs.Print();
+                    if (subcommands.Length != 1)
+                    {
+                        Console.WriteLine("Incorreсt \"print\" command");
+                    }
+                    else
+                    {
+                        PrintHsTable(hs);
+                    }
                 }
                 else if((subcommands[0] == "findAll")&&(subcommands.Length == 1))
                 {
-                    Console.WriteLine("Enter doctor's name: ");
-                    string name = Console.ReadLine();
-                    Console.WriteLine($"Doctor's {name} list of patients");
-                    addedHS.Find2(name);
+                    if (subcommands.Length != 1)
+                    {
+                        Console.WriteLine("Incorreсt \"fingAll\" command");
+                    }
+                    else
+                    {
+                        FindAllPatiens(addedHS);
+                    }
                 }
-                else if(command == "exit")
+                else if(subcommands[0] == "exit")
                 {
-                    Console.WriteLine("Programm was closed");
+                    if (subcommands.Length != 1)
+                    {
+                        Console.WriteLine("Incorreсt \"exit\" command");
+                    }
+                    Console.WriteLine("Program was closed");
                     Console.WriteLine("Bye!");
                     break;
                 }
@@ -388,7 +345,161 @@ namespace lab7
                     Console.WriteLine("Unknown command");
                     Console.ResetColor();
                 }
+                Console.WriteLine();
             }
+        }
+        static int FillControl(HashTable hs, int count, AddHashTable addedHS, List<string> listDoctor, List<string> baseOfDoctors)
+        {
+            ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Anthony",
+            "Byrne", "Deckergasse", "Max");
+            count++;
+            ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Colm",
+            "McCarthy", "Dorotheergasse", "Max");
+            count++;
+            ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Tim",
+            "Mielants", "Schönlaterngasse", "Max");
+            count++;
+            ControlValues(hs,  count, listDoctor, baseOfDoctors, addedHS, "Steven",
+            "Knight", "Wienzeile", "Vladislav");
+            count++;
+            ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Sofia",
+            "Knight", "Museumsquartier", "Vladislav");
+            count++;
+            ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Cillian",
+            "Murphy", "Pazmanitengasse", "John");
+            count++;
+            ControlValues(hs, count, listDoctor, baseOfDoctors, addedHS, "Paul",
+            "Anderson", "Karlsplatz", "Jacob");
+            count++;
+            return count;
+        }
+        static int AddPatient(int count, Key key, Value value, HashTable hs, AddHashTable addedHS, List<string> listDoctor, List<string> baseOfDoctors)
+        {
+            Console.WriteLine("Enter name: ");
+            key.firstName = Console.ReadLine();
+            if (key.firstName == "")
+            {
+                Console.WriteLine("Name is empty!");
+                return count;
+            }
+            Console.WriteLine("Enter surname: ");
+            key.lastName = Console.ReadLine();
+            if(key.lastName == "")
+            {
+                Console.WriteLine("Surname is empty!");
+                return count;
+            }
+            value.patientID = GenerateID(count);
+            Console.WriteLine("Enter address: ");
+            value.address = Console.ReadLine();
+            if (value.address == "")
+            {
+                Console.WriteLine("Address is empty!");
+                return count;
+            }
+            Console.WriteLine("Enter doctor: ");
+            value.familyDoctor = Console.ReadLine();
+            if (value.familyDoctor == "")
+            {
+                Console.WriteLine("Doctor is empty!");
+                return count;
+            }
+            listDoctor.Add(value.familyDoctor);
+            if(!baseOfDoctors.Contains(value.familyDoctor))
+            {
+                baseOfDoctors.Add(value.familyDoctor);
+            }
+            if(CheckCountOfPatients(listDoctor, value.familyDoctor))
+            {
+                hs.InsertEntry(key, value);
+                string newValue = value.patientID + " " + key.ToString() + " " + value.address;
+                addedHS.Insert2(value.familyDoctor, newValue);
+                count++;
+                Console.WriteLine("Patient was added to base");
+            }
+            else
+            {
+                Console.WriteLine($"Doctor {value.familyDoctor} have no free places");
+                Console.WriteLine("You can choose another doctor");
+                string freeDoctor = "";
+                string [] arr = new string[baseOfDoctors.Count];
+                baseOfDoctors.CopyTo(arr);
+                for(int j = 0; j < arr.Length; j++)
+                {
+                    string doctor = arr[j];
+                    if(CheckCountOfPatients(listDoctor, doctor))
+                    {
+                        freeDoctor += doctor + "\r\n";
+                    }
+                }
+                if(freeDoctor.Length > 0)
+                {
+                    Console.WriteLine("Free doctors: ");
+                    Console.Write(freeDoctor);
+                }
+                else
+                {
+                    Console.WriteLine("There are no free doctors");
+                }
+            }
+            return count;
+        }        
+        static void RemovePatient(Key key, Value value, HashTable hs, AddHashTable addedHS, List<string> listDoctor)
+        {
+            Console.WriteLine("Enter name: ");
+            key.firstName = Console.ReadLine();
+            if (key.firstName == "")
+            {
+                Console.WriteLine("Name is empty!");
+                return;
+            }
+            Console.WriteLine("Enter surname: ");
+            key.lastName = Console.ReadLine();
+            if(key.lastName == "")
+            {
+                Console.WriteLine("Surname is empty!");
+                return;
+            }
+            Value value2 = hs.FindEntry(key);
+            string newValue = " " + value2.patientID + " " + key.ToString() + " " + value2.address;
+            hs.Remove(key);
+            addedHS.Delete(value2.familyDoctor, newValue);
+            listDoctor.Remove(value2.familyDoctor);
+        }
+        static void FindPatient(Key key, HashTable hs)
+        {
+            Console.WriteLine("Enter name: ");
+            key.firstName = Console.ReadLine();
+            if (key.firstName == "")
+            {
+                Console.WriteLine("Name is empty!");
+                return;
+            }
+            Console.WriteLine("Enter surname: ");
+            key.lastName = Console.ReadLine();
+            if(key.lastName == "")
+            {
+                Console.WriteLine("Surname is empty!");
+                return;
+            }
+            hs.FindEntry(key);
+        }
+        static void PrintHsTable(HashTable hs)
+        {
+            Console.WriteLine("Hash table:");
+            hs.Print();
+        }
+        static void FindAllPatiens(AddHashTable addedHS)
+        {
+            Console.WriteLine("Enter doctor");
+            string name = Console.ReadLine();
+            if (name == "")
+            {
+                Console.WriteLine("Doctor is empty!");
+                return;
+            }
+            Console.WriteLine($"Doctor's {name} list of patients");
+            addedHS.Find2(name);
         }
     }
 }
