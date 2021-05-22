@@ -92,7 +92,6 @@ namespace lab8
                             if (copyHeap[2 * j + 1] != null)
                             {
                                 return false;
-
                             }
                         }
                     }
@@ -131,7 +130,9 @@ namespace lab8
             this.Print((2 * i + 2), position);
             WriteLine("\n");
             for (int j = 5; j < position; j++)
+            {
                 Write(" ");
+            }
             if (i == 0)
             {
                 Write("\r"+"ROOT: " + items[i] + "\n");
